@@ -32,50 +32,50 @@ const Detail = () => {
               <div className="card p-3 my-5">
                 <h2 className="text-center">Detail Employee</h2>
                 <div class="row">
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-3">
                     <font size={5}>ID </font>
                   </div>
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-9">
                     <font size={5}>{user.ID}</font>
                   </div>
                 </div>
                 <div class="row">
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-3">
                     <font size={5}>Name </font>
                   </div>
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-9">
                     <font size={5}>{user.Name}</font>
                   </div>
                 </div>
                 <div class="row">
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-3">
                     <font size={5}>Email </font>
                   </div>
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-9">
                     <font size={5}>{user.Email}</font>
                   </div>
                 </div>
                 <div class="row">
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-3">
                     <font size={5}>Mobile </font>
                   </div>
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-9">
                     <font size={5}>{user.Mobile}</font>
                   </div>
                 </div>
                 <div class="row">
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-3">
                     <font size={5}>Birthdate </font>
                   </div>
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-9">
                     <font size={5}>{`${d} ${monthNames[m - 1]} ${y}`}</font>
                   </div>
                 </div>
                 <div class="row">
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-3">
                     <font size={5}>Address </font>
                   </div>
-                  <div className="mb-3 col-4">
+                  <div className="mb-3 col-9">
                     <font size={5}>{user.Address}</font>
                   </div>
                 </div>

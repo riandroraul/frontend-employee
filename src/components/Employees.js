@@ -21,7 +21,7 @@ const Employees = () => {
 
   useEffect(() => {
     getAllUsers();
-  }, []);
+  }, [search]);
 
   console.log(users);
   return (

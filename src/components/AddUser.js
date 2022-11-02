@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Moment from "react-moment";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import Input from "./Input";
+// import ErrorInput from "./validator/ErrorInput";
 
 const AddUser = () => {
   const [name, setName] = useState("");
@@ -9,6 +10,7 @@ const AddUser = () => {
   const [mobile, setMobile] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [address, setAddress] = useState("");
+  const [errors, setErrors] = useState();
   const navigate = useNavigate();
 
   // defaultDate.setDate(defaultDate.getDate() + 3);
@@ -16,11 +18,11 @@ const AddUser = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      name,
-      email,
-      mobile,
-      birthdate,
-      address,
+      Name: name,
+      Email: email,
+      Mobile: mobile,
+      Birthdate: birthdate,
+      Address: address,
     };
 
     const requestOptions = {
@@ -30,30 +32,57 @@ const AddUser = () => {
       },
       body: JSON.stringify(data),
     };
-    const response = await fetch(
-      "http://localhost:5000/employee/add",
-      requestOptions
-    );
-    const users = await response.json();
-    // console.log(response.status);
-    console.log(users);
-    if (response.status === 200) {
-      navigate("/");
-      Swal.fire({
-        icon: "success",
-        type: "success",
-        title: users.message,
-      });
-    } else {
-      navigate("/add");
-      Swal.fire({
-        icon: "warning",
-        type: "success",
-        title: users.message,
-      });
+    try {
+      const response = await fetch(
+        "http://localhost:5000/employee/add",
+        requestOptions
+      );
+
+      const users = await response.json();
+      console.log(users.errors);
+      if (users.errors.length > 0) {
+        users.errors.find((e) => {
+          switch (e.param) {
+            case "Name":
+              console.log(e.msg);
+              break;
+            case "Email":
+              console.log(e.msg);
+              break;
+            case "Mobile":
+              console.log(e.msg);
+              break;
+            case "Birthdate":
+              console.log(e.msg);
+              break;
+            default:
+              console.log(e.msg);
+              break;
+          }
+        });
+      }
+      console.log(errors);
+      if (response.status === 200) {
+        navigate("/");
+        Swal.fire({
+          icon: "success",
+          type: "success",
+          title: users.message,
+        });
+      } else {
+        navigate("/add");
+        Swal.fire({
+          icon: "warning",
+          type: "success",
+          title: users.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      // setErrors(error);
     }
   };
-  console.log(birthdate);
+
   return (
     <div>
       <div className="min-vh-100 bg-secondary bg-opacity-50">
@@ -63,86 +92,55 @@ const AddUser = () => {
               <div className="card p-3 my-5">
                 <h2 className="text-center">Add Employee</h2>
                 <form onSubmit={onSubmit}>
-                  <div className="mb-3">
-                    <label htmlFor="name" className="form-label">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      id="name"
-                      value={name}
-                      onChange={(event) => setName(event.target.value)}
-                      placeholder="enter your name.."
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      id="email"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                      placeholder="enter your email.. "
-                      required
-                    />
-                  </div>
-                  <div className="mb-3 ">
-                    <label htmlFor="mobile" className="form-label">
-                      Mobile
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      name="mobile"
-                      id="mobile"
-                      value={mobile}
-                      onChange={(event) => setMobile(event.target.value)}
-                      placeholder="Enter your phone number.. "
-                      required
-                    />
-                  </div>
-                  <div className="mb-3 ">
-                    <label htmlFor="birthdate" className="form-label">
-                      Birthdate
-                    </label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      name="birthdate"
-                      id="birthdate"
-                      value={<Moment format="YYYY-MM-DD">{birthdate}</Moment>}
-                      onChange={(event) =>
-                        setBirthdate(
-                          <Moment format="YYYY-MM-DD">
-                            {event.target.value}
-                          </Moment>
-                        )
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="mb-3 ">
-                    <label htmlFor="address" className="form-label">
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="address"
-                      id="address"
-                      value={address}
-                      onChange={(event) => setAddress(event.target.value)}
-                      placeholder="Enter your address"
-                      required
-                    />
-                  </div>
+                  <Input
+                    label="Name"
+                    type="text"
+                    className="form-control"
+                    name="Name"
+                    id="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder="enter your name..."
+                  />
+                  <Input
+                    label="Email"
+                    type="email"
+                    className="form-control"
+                    name="Email"
+                    id="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="enter your email..."
+                  />
+                  <Input
+                    label="Mobile"
+                    type="number"
+                    className="form-control"
+                    name="Mobile"
+                    id="mobile"
+                    value={mobile}
+                    onChange={(event) => setMobile(event.target.value)}
+                    placeholder="enter your phone number..."
+                  />
+                  <Input
+                    label="Birthdate"
+                    type="date"
+                    className="form-control"
+                    name="Birthdate"
+                    id="birthdate"
+                    value={birthdate}
+                    onChange={(event) => setBirthdate(event.target.value)}
+                  />
+                  <Input
+                    label="Address"
+                    type="text"
+                    className="form-control"
+                    name="Address"
+                    id="address"
+                    value={address}
+                    onChange={(event) => setAddress(event.target.value)}
+                    placeholder="Enter your address"
+                  />
                   <div className="mb-3">
                     <button
                       type="submit"
