@@ -10,7 +10,7 @@ const AddUser = () => {
   const [mobile, setMobile] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [address, setAddress] = useState("");
-  const [errors, setErrors] = useState();
+  const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
   // defaultDate.setDate(defaultDate.getDate() + 3);
@@ -40,43 +40,44 @@ const AddUser = () => {
 
       const users = await response.json();
       console.log(users.errors);
-      if (users.errors.length > 0) {
-        users.errors.find((e) => {
-          switch (e.param) {
-            case "Name":
-              console.log(e.msg);
-              break;
-            case "Email":
-              console.log(e.msg);
-              break;
-            case "Mobile":
-              console.log(e.msg);
-              break;
-            case "Birthdate":
-              console.log(e.msg);
-              break;
-            default:
-              console.log(e.msg);
-              break;
-          }
-        });
-      }
+      setErrors(users.errors);
+      // if (users.errors.length > 0) {
+      //   users.errors.find((e) => {
+      //     switch (e.param) {
+      //       case "Name":
+      //         console.log(e.msg);
+      //         break;
+      //       case "Email":
+      //         console.log(e.msg);
+      //         break;
+      //       case "Mobile":
+      //         console.log(e.msg);
+      //         break;
+      //       case "Birthdate":
+      //         console.log(e.msg);
+      //         break;
+      //       default:
+      //         console.log(e.msg);
+      //         break;
+      //     }
+      //   });
+      // }
       console.log(errors);
-      if (response.status === 200) {
-        navigate("/");
-        Swal.fire({
-          icon: "success",
-          type: "success",
-          title: users.message,
-        });
-      } else {
-        navigate("/add");
-        Swal.fire({
-          icon: "warning",
-          type: "success",
-          title: users.message,
-        });
-      }
+      //   if (response.status === 200) {
+      //     navigate("/");
+      //     Swal.fire({
+      //       icon: "success",
+      //       type: "success",
+      //       title: users.message,
+      //     });
+      //   } else {
+      //     navigate("/add");
+      //     Swal.fire({
+      //       icon: "warning",
+      //       type: "success",
+      //       title: users.message,
+      //     });
+      //   }
     } catch (error) {
       console.log(error);
       // setErrors(error);
@@ -115,7 +116,7 @@ const AddUser = () => {
                   <Input
                     label="Mobile"
                     type="number"
-                    className="form-control"
+                    className={`form-control ${errors} ? 'is-invalid' : '' `}
                     name="Mobile"
                     id="mobile"
                     value={mobile}
@@ -144,6 +145,9 @@ const AddUser = () => {
                   <div className="mb-3">
                     <button
                       type="submit"
+                      disabled={
+                        !name || !email || !mobile || !birthdate || !address
+                      }
                       className="form-control btn btn-primary"
                     >
                       Submit
